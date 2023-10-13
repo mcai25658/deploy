@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  consul:
+    container_name: consul
+    image: consul:1.15.4
+    restart: always
+    ports:
+      - "8500:8500"
+    volumes:
+      - consul-data:/consul/data
+    command: ["agent", "-server", "-bootstrap-expect=1", "-data-dir=/consul/data", "-bind=0.0.0.0", "-client=0.0.0.0"]
+  vault:
+    container_name: vault
+    image: vault:1.13.3
+    restart: always
+    ports:
+      - "8200:8200"
+    depends_on:
+      - consul
+    environment:
+      VAULT_ADDR: "http://vault:8200"
+      CONSUL_HTTP_ADDR: "http://consul:8500"
+    volumes:
+      - ./vault-config:/vault/config
+    cap_add:
+      - IPC_LOCK
+    command: server
+
+volumes:
+  consul-data:
+  vault-config:

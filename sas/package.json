@@ -1,0 +1,11 @@
+{
+  "name": "sas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "release": "rsync -avz release/ dls@192.168.23.123:/home/dls/deploy/release"
+  },
+  "author": "",
+  "license": "ISC"
+}

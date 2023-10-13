@@ -1,0 +1,15 @@
+version: "3"
+services:
+  srs-server:
+    container_name: srs
+    image: registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5
+    ports:
+      - "1935:1935"
+      - "1985:1985"
+      - "8080:8080"
+      - "8000:8000/udp"
+    environment:
+      - CANDIDATE=59.126.75.154
+    volumes:
+      - ./rtmp2rtc.conf:/usr/local/srs/conf/rtmp2rtc.conf # 將本地的 rtmp2rtc.conf 掛載到容器的 /srs/conf/rtmp2rtc.conf
+    command: ["./objs/srs", "-c", "conf/rtmp2rtc.conf"]

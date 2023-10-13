@@ -1,0 +1,32 @@
+version: "3.7" # Docker Engine release 18.02.0+
+
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    container_name: registry
+    restart: always
+    hostname: "${REGISTRY_HOST}"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url "${GITLAB_EXTERNAL_URL}"
+        # Container Registry
+        registry_external_url "${REGISTRY_EXTERNAL_URL}"
+        gitlab_rails['registry_enabled'] = true
+        gitlab_rails['registry_host'] = "${REGISTRY_HOST}"
+        gitlab_rails['registry_port'] = ${REGISTRY_PORT}
+        gitlab_rails['registry_path'] = "/var/opt/gitlab/gitlab-rails/shared/registry"
+
+        # Disable unwanted features
+        gitlab_rails['lfs_enabled'] = false
+        gitlab_rails['pages_enabled'] = false
+        mattermost_external_url 'http://no.where'
+        mattermost['enable'] = false
+    ports:
+      - ${WEB_UI_PORT}:${WEB_UI_PORT}
+      - ${REGISTRY_PORT}:${REGISTRY_PORT}
+    volumes:
+      - ./gitlab/config:/etc/gitlab
+      - ./gitlab/logs:/var/log/gitlab
+      - ./gitlab/data:/var/opt/gitlab
+      - ./gitlab/registry:/var/opt/gitlab/gitlab-rails/shared/registry
+

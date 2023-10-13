@@ -1,0 +1,19 @@
+version: "3.7" # Docker Engine release 18.02.0+
+
+services:
+  redis:
+    container_name: socket-redis
+    image: redis:7-alpine
+    restart: always
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - redis-db:/data/redis
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    command: /bin/sh -c 'redis-server --appendonly yes --requirepass $$REDIS_PASSWORD'
+
+
+volumes:
+  redis-db:
+    driver: local

@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  ftp:
+    image: stilliard/pure-ftpd
+    environment:
+      PUBLICHOST: "192.168.23.131"
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes:
+      - ./ftpusers:/home/ftpusers

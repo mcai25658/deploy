@@ -1,0 +1,14 @@
+version: "3.7" # Docker Engine release 18.02.0+
+
+services:
+  socket:
+    container_name: socket
+    image: ${DOCKER_IMAGE}
+    restart: always
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - SIGNALR_HOST=${SIGNALR_HOST}
+      - SIGNALR_Id=A001
+    ports:
+      - ${SOCKET_PORT}:${SOCKET_PORT}

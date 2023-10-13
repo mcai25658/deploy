@@ -1,0 +1,18 @@
+version: "3.7" # Docker Engine release 18.02.0+
+
+services:
+  api:
+    container_name: api
+    image: ${DOCKER_IMAGE}
+    restart: always
+    environment:
+      - ConnectionStrings__SasDbConnectionString=${CONNECTION_STRING}
+      - EgmSessionTimeoutSettings__QueryIntervalSeconds=5
+      - EgmSessionTimeoutSettings__AboutToExpireSessionsSeconds=30
+      - EgmSessionTimeoutSettings__SessionTimeoutMinutes=10
+      - JwtSettings__DurationInMinutes=60
+      - JwtSettings__RefreshTokenExpiryInDate=3
+      - LockoutSettings__DefaultLockoutTimeSpanMinutes=2
+      - LockoutSettings__MaxFailedAccessAttempts=6
+    ports:
+      - ${API_PORT}:${API_PORT}
